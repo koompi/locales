@@ -5,37 +5,6 @@ use std::io::prelude::*;
 use std::io::Error;
 use std::process::Command;
 
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-struct LocaleGen {
-    pub locales: HashMap<String, LocaleData>,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-struct LocaleData {
-    pub country: String,
-    pub flag: String,
-    pub locale: Locale,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-struct Locale {
-    pub lang: String,              //en_US.UTF-8
-    pub lc_ctype: String,          //"en_US.UTF-8"
-    pub lc_numeric: String,        //"en_US.UTF-8"
-    pub lc_time: String,           //"en_US.UTF-8"
-    pub lc_collate: String,        //"en_US.UTF-8"
-    pub lc_monetary: String,       //"en_US.UTF-8"
-    pub lc_messages: String,       //"en_US.UTF-8"
-    pub lc_paper: String,          //"en_US.UTF-8"
-    pub lc_name: String,           //"en_US.UTF-8"
-    pub lc_address: String,        //"en_US.UTF-8"
-    pub lc_telephone: String,      //"en_US.UTF-8"
-    pub lc_measurement: String,    //"en_US.UTF-8"
-    pub lc_identification: String, //"en_US.UTF-8"
-    pub lc_all: String,            //
-}
-
 impl LocaleGen {
     pub fn new() -> Self {
         Self::default()
@@ -118,59 +87,4 @@ fn main() -> Result<(), Error> {
     }
 
     Ok(())
-}
-
-fn conf_parser(data: Vec<String>) -> Locale {
-    let mut res: Locale = Locale::default();
-
-    for s in data.clone().iter_mut() {
-        let line: Vec<String> = s.split('=').map(|f| f.to_string()).collect();
-        match line[0].as_str() {
-            "LANG" => {
-                res.lang = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_CTYPE" => {
-                res.lc_ctype = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_NUMERIC" => {
-                res.lc_numeric = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_TIME" => {
-                res.lc_time = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_COLLATE" => {
-                res.lc_collate = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_MONETARY" => {
-                res.lc_monetary = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_MESSAGES" => {
-                res.lc_messages = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_PAPER" => {
-                res.lc_paper = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_NAME" => {
-                res.lc_name = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_ADDRESS" => {
-                res.lc_address = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_TELEPHONE" => {
-                res.lc_telephone = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_MEASUREMENT" => {
-                res.lc_measurement = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_IDENTIFICATION" => {
-                res.lc_identification = line[1].clone().trim_matches('"').to_string();
-            }
-            "LC_ALL" => {
-                res.lc_all = line[1].clone().trim_matches('"').to_string();
-            }
-            _ => {}
-        }
-    }
-
-    res
 }

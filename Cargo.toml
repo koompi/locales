@@ -1,2 +1,2 @@
 [workspace]
-members = ["locale-generator"]
+members = ["liblocale", "locale-generator", "config"]
